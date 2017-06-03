@@ -7,6 +7,6 @@ class MappingGenerator
   end
 
   def execute
-    puts phone_number
+    phone_number
   end
 end
