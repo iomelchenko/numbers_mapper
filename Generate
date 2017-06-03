@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require './app/initializer'
+
+MappingGenerator.new(ARGV[0]).execute
