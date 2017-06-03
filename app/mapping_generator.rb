@@ -14,6 +14,13 @@ class MappingGenerator
     combine_pair_results pairs, results, singles
     results = sort_pairs results
     combine_single_results singles, results
+
+    if results.flatten.empty?
+      deltas = fetch_words(delta_combinations)
+      combine_deltas_results deltas, results
+      results = sort_deltas(results)
+    end
+
     puts results.to_s
     results
   end
@@ -44,6 +51,26 @@ class MappingGenerator
 
   def sort_pairs(results)
     results.sort_by { |el| el[1] }.sort_by { |el| el[0] }
+  end
+
+  def delta_combinations
+    %w[3 3 4].permutation.map(&:join).uniq
+  end
+
+  def combine_deltas_results(deltas, results, single = [])
+    deltas.each do |delta|
+      delta[0].each do |el_0|
+        delta[1].each do |el_1|
+          delta[2].each do |el_2|
+            insert_result(results, [el_0, el_1, el_2], single)
+          end
+        end
+      end
+    end
+  end
+
+  def sort_deltas(results)
+    results.sort_by { |el| el[2] }.sort_by { |el| el[1] }.sort_by { |el| el[0] }
   end
 
   def fetch_words(combinations)
