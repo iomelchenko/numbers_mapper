@@ -8,9 +8,12 @@ class MappingGenerator
   end
 
   def execute
+    results = []
     pairs = fetch_words(pair_combinations)
-    puts pairs.to_s
-    pairs
+    combine_pair_results pairs, results
+    results = sort_pairs results
+    puts results.to_s
+    results
   end
 
   private
@@ -25,6 +28,20 @@ class MappingGenerator
     (3..7).map do |first_el|
       first_el.to_s + (10 - first_el).to_s
     end
+  end
+
+  def combine_pair_results(pairs, results)
+    pairs.each do |pair|
+      pair[0].each do |el_0|
+        pair[1].each do |el_1|
+          results << [el_0, el_1]
+        end
+      end
+    end
+  end
+
+  def sort_pairs(results)
+    results.sort_by { |el| el[1] }.sort_by { |el| el[0] }
   end
 
   def fetch_words(combinations)
