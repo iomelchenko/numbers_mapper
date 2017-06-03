@@ -41,10 +41,8 @@ class MappingGenerator
 
   def combine_pair_results(pairs, results, single = [])
     pairs.each do |pair|
-      pair[0].each do |el_0|
-        pair[1].each do |el_1|
-          insert_result(results, [el_0, el_1], single)
-        end
+      pair[0].product(pair[1]).each do |el|
+        results << el unless already_exists_single?(el, single)
       end
     end
   end
@@ -57,14 +55,11 @@ class MappingGenerator
     %w[3 3 4].permutation.map(&:join).uniq
   end
 
-  def combine_deltas_results(deltas, results, single = [])
-    deltas.each do |delta|
-      delta[0].each do |el_0|
-        delta[1].each do |el_1|
-          delta[2].each do |el_2|
-            insert_result(results, [el_0, el_1, el_2], single)
-          end
-        end
+  def combine_deltas_results(tetras, results)
+    tetras.each do |tetra|
+      elements = tetra[0].product(tetra[1].product(tetra[2])).map { |el| el.flatten }
+      elements.each do |el|
+        results << el
       end
     end
   end
@@ -96,10 +91,6 @@ class MappingGenerator
       words_for_number << words_for_part_number
       start_idx += len
     end
-  end
-
-  def insert_result(results, el, single)
-    results.push(el) unless already_exists_single?(el, single)
   end
 
   def combine_single_results(single, results)
