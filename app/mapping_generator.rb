@@ -10,8 +10,10 @@ class MappingGenerator
   def execute
     results = []
     pairs = fetch_words(pair_combinations)
-    combine_pair_results pairs, results
+    singles = index[phone_number.to_i] || []
+    combine_pair_results pairs, results, singles
     results = sort_pairs results
+    combine_single_results singles, results
     puts results.to_s
     results
   end
@@ -30,11 +32,11 @@ class MappingGenerator
     end
   end
 
-  def combine_pair_results(pairs, results)
+  def combine_pair_results(pairs, results, single = [])
     pairs.each do |pair|
       pair[0].each do |el_0|
         pair[1].each do |el_1|
-          results << [el_0, el_1]
+          insert_result(results, [el_0, el_1], single)
         end
       end
     end
@@ -67,5 +69,17 @@ class MappingGenerator
       words_for_number << words_for_part_number
       start_idx += len
     end
+  end
+
+  def insert_result(results, el, single)
+    results.push(el) unless already_exists_single?(el, single)
+  end
+
+  def combine_single_results(single, results)
+    single.each { |el| results << el }
+  end
+
+  def already_exists_single?(el, single)
+    single.include? el.join
   end
 end
