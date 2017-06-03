@@ -1,4 +1,9 @@
 #!/usr/bin/env ruby
 require './app/initializer'
 
+arg = ARGV.join
+if arg.empty? || arg.length != 10 || (arg =~ /[0,1]|\D/)
+  raise "Need to pass 10 digits in the argument (only 2 - 9)"
+end
+
 MappingGenerator.new(ARGV[0]).execute
