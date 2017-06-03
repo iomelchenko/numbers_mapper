@@ -24,7 +24,7 @@ class Indexer
     words.each do |word|
       key = generate_word_index_key(word)
       index_element = build_word_index_element(key, word)
-      index.merge!(word.length => index_element)
+      index.merge!(key => index_element)
     end
   end
 
@@ -35,10 +35,8 @@ class Indexer
   end
 
   def build_word_index_element(key, word)
-    index_element = index[word.length] || {}
-    words_array = index_element[key] || []
-    words_array << word
-    index_element.merge!(key => words_array)
+    index_element = index[key] || []
+    index_element << word
   end
 
   def fetch_words
