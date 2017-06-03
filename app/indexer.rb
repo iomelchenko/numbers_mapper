@@ -41,7 +41,10 @@ class Indexer
 
   def fetch_words
     File.read(file_path).split.map do |word|
-      word.downcase if word.length > 2
+      word_length = word.length
+      if (word_length > 2 && word_length < 8) || word_length == 10
+        word.downcase
+      end
     end.compact
 
   rescue => error
