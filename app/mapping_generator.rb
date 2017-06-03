@@ -11,17 +11,17 @@ class MappingGenerator
     results = []
     pairs = fetch_words(pair_combinations)
     singles = index[phone_number.to_i] || []
-    combine_pair_results pairs, results, singles
-    results = sort_pairs results
-    combine_single_results singles, results
+    combine_pair_results(pairs, results, singles)
+    results = sort_pairs(results)
+    combine_single_results(singles, results)
 
     if results.flatten.empty?
       deltas = fetch_words(delta_combinations)
-      combine_deltas_results deltas, results
+      combine_deltas_results(deltas, results)
       results = sort_deltas(results)
     end
 
-    puts results.to_s
+    print_results(results)
     results
   end
 
@@ -108,5 +108,9 @@ class MappingGenerator
 
   def already_exists_single?(el, single)
     single.include? el.join
+  end
+
+  def print_results(results)
+    puts results.to_s.gsub('"', '&quot;')
   end
 end
