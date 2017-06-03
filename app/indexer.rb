@@ -17,7 +17,7 @@ class Indexer
   private
 
   def save_index_file
-    File.open(index_file_path, "w") { |index_file| index_file.write index }
+    File.open(index_file_path, "w") { |index_file| index_file.write Marshal.dump(index.to_h) }
   end
 
   def build_index(words)
