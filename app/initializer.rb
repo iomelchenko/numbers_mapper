@@ -1,4 +1,3 @@
-require 'pry'
 require './app/mapping_generator'
 require './app/indexer'
 
